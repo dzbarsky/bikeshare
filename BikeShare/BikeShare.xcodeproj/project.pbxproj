@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		535DFC221A05855B00C4DE37 /* StationMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535DFC211A05855B00C4DE37 /* StationMarker.swift */; };
 		53F5A14B1A01E6B2006160CE /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5A14A1A01E6B2006160CE /* GoogleMaps.framework */; };
 		53F5A14D1A01E829006160CE /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 53F5A14C1A01E829006160CE /* GoogleMaps.bundle */; };
 		53F5A14F1A01E83F006160CE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5A14E1A01E83F006160CE /* AVFoundation.framework */; };
@@ -26,12 +27,10 @@
 		B48F647519B22EB200710BEB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B48F647419B22EB200710BEB /* Images.xcassets */; };
 		B48F648119B22EB200710BEB /* BikeShareTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F648019B22EB200710BEB /* BikeShareTests.swift */; };
 		B48F648E19B22F8700710BEB /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F648D19B22F8700710BEB /* MapViewController.swift */; };
-		B48F649219B22F9400710BEB /* GoogleDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F648F19B22F9400710BEB /* GoogleDataProvider.swift */; };
-		B48F649319B22F9400710BEB /* GooglePlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F649019B22F9400710BEB /* GooglePlace.swift */; };
+		B48F649319B22F9400710BEB /* BikeStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F649019B22F9400710BEB /* BikeStation.swift */; };
 		B48F649819B22F9B00710BEB /* MarkerInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F649519B22F9B00710BEB /* MarkerInfoView.swift */; };
 		B48F649919B22F9B00710BEB /* MarkerInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B48F649619B22F9B00710BEB /* MarkerInfoView.xib */; };
 		B48F649A19B22F9B00710BEB /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F649719B22F9B00710BEB /* UIViewExtension.swift */; };
-		B48F649C19B22FA500710BEB /* TypesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48F649B19B22FA500710BEB /* TypesTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,11 +39,12 @@
 			containerPortal = B48F646019B22EB200710BEB /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = B48F646719B22EB200710BEB;
-			remoteInfo = "BikeShare";
+			remoteInfo = BikeShare;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		535DFC211A05855B00C4DE37 /* StationMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StationMarker.swift; path = BikeShare/Views/StationMarker.swift; sourceTree = SOURCE_ROOT; };
 		53F5A14A1A01E6B2006160CE /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		53F5A14C1A01E829006160CE /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		53F5A14E1A01E83F006160CE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -69,12 +69,10 @@
 		B48F647F19B22EB200710BEB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B48F648019B22EB200710BEB /* BikeShareTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BikeShareTests.swift; sourceTree = "<group>"; };
 		B48F648D19B22F8700710BEB /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		B48F648F19B22F9400710BEB /* GoogleDataProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleDataProvider.swift; sourceTree = "<group>"; };
-		B48F649019B22F9400710BEB /* GooglePlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GooglePlace.swift; sourceTree = "<group>"; };
+		B48F649019B22F9400710BEB /* BikeStation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BikeStation.swift; sourceTree = "<group>"; };
 		B48F649519B22F9B00710BEB /* MarkerInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarkerInfoView.swift; sourceTree = "<group>"; };
 		B48F649619B22F9B00710BEB /* MarkerInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MarkerInfoView.xib; sourceTree = "<group>"; };
 		B48F649719B22F9B00710BEB /* UIViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
-		B48F649B19B22FA500710BEB /* TypesTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypesTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,8 +138,7 @@
 				B48F647419B22EB200710BEB /* Images.xcassets */,
 				B48F646B19B22EB200710BEB /* Supporting Files */,
 			);
-			name = BikeShare;
-			path = "BikeShare";
+			path = BikeShare;
 			sourceTree = "<group>";
 		};
 		B48F646B19B22EB200710BEB /* Supporting Files */ = {
@@ -158,8 +155,7 @@
 				B48F648019B22EB200710BEB /* BikeShareTests.swift */,
 				B48F647E19B22EB200710BEB /* Supporting Files */,
 			);
-			name = BikeShareTests;
-			path = "BikeShareTests";
+			path = BikeShareTests;
 			sourceTree = "<group>";
 		};
 		B48F647E19B22EB200710BEB /* Supporting Files */ = {
@@ -174,7 +170,6 @@
 			isa = PBXGroup;
 			children = (
 				B48F648D19B22F8700710BEB /* MapViewController.swift */,
-				B48F649B19B22FA500710BEB /* TypesTableViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -182,8 +177,7 @@
 		B48F648B19B22F0600710BEB /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B48F648F19B22F9400710BEB /* GoogleDataProvider.swift */,
-				B48F649019B22F9400710BEB /* GooglePlace.swift */,
+				B48F649019B22F9400710BEB /* BikeStation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -192,6 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				B48F649519B22F9B00710BEB /* MarkerInfoView.swift */,
+				535DFC211A05855B00C4DE37 /* StationMarker.swift */,
 				B48F649619B22F9B00710BEB /* MarkerInfoView.xib */,
 				B48F649719B22F9B00710BEB /* UIViewExtension.swift */,
 			);
@@ -235,7 +230,7 @@
 			dependencies = (
 			);
 			name = BikeShare;
-			productName = "BikeShare";
+			productName = BikeShare;
 			productReference = B48F646819B22EB200710BEB /* BikeShare.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -253,7 +248,7 @@
 				B48F647C19B22EB200710BEB /* PBXTargetDependency */,
 			);
 			name = BikeShareTests;
-			productName = "BikeShareTests";
+			productName = BikeShareTests;
 			productReference = B48F647A19B22EB200710BEB /* BikeShareTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -264,10 +259,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0600;
-				ORGANIZATIONNAME = "Ron Kliffer";
+				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					B48F646719B22EB200710BEB = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = 9XHZKW723K;
 					};
 					B48F647919B22EB200710BEB = {
 						CreatedOnToolsVersion = 6.0;
@@ -320,12 +316,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				535DFC221A05855B00C4DE37 /* StationMarker.swift in Sources */,
 				B48F646E19B22EB200710BEB /* AppDelegate.swift in Sources */,
-				B48F649219B22F9400710BEB /* GoogleDataProvider.swift in Sources */,
-				B48F649319B22F9400710BEB /* GooglePlace.swift in Sources */,
+				B48F649319B22F9400710BEB /* BikeStation.swift in Sources */,
 				B48F648E19B22F8700710BEB /* MapViewController.swift in Sources */,
 				B48F649A19B22F9B00710BEB /* UIViewExtension.swift in Sources */,
-				B48F649C19B22FA500710BEB /* TypesTableViewController.swift in Sources */,
 				B48F649819B22F9B00710BEB /* MarkerInfoView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -445,13 +440,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
-				INFOPLIST_FILE = "BikeShare/Info.plist";
+				INFOPLIST_FILE = BikeShare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = BikeShare;
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BikeShare-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -463,13 +461,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
-				INFOPLIST_FILE = "BikeShare/Info.plist";
+				INFOPLIST_FILE = BikeShare/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = BikeShare;
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BikeShare-Bridging-Header.h";
 			};
 			name = Release;
@@ -486,7 +487,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "BikeShareTests/Info.plist";
+				INFOPLIST_FILE = BikeShareTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = BikeShareTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BikeShare.app/BikeShare";
@@ -501,7 +502,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "BikeShareTests/Info.plist";
+				INFOPLIST_FILE = BikeShareTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = BikeShareTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BikeShare.app/BikeShare";

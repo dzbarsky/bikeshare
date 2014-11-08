@@ -34,19 +34,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     mapView.clear()
 
-    let dictionary = ["address" : "4043 Locust St", "lat" : 39.953362, "lng" : -75.204573]
-    let station = BikeStation(dictionary: dictionary)
-    let station1 = StationMarker(place: station)
+    let url = NSURL(string: "http://www.bikester.herokuapp.com/bikes")
     
-    
-    let dictionary1 = ["address" : "Huntsman", "lat" : 39.9529106, "lng" : -75.1982674]
-    let station3 = BikeStation(dictionary: dictionary1)
-    let station2 = StationMarker(place: station3)
-    
-    station1.map = self.mapView
-    station2.map = self.mapView
-    println("debug console")
-    
+    let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+        println(NSString(data: data, encoding: NSUTF8StringEncoding))
+        let dictionary = ["address" : "4043 Locust St", "lat" : 39.953362, "lng" : -75.204573]
+        let station = BikeStation(dictionary: dictionary)
+        let station1 = StationMarker(place: station)
+        
+        
+        let dictionary1 = ["address" : "Huntsman", "lat" : 39.9529106, "lng" : -75.1982674]
+        let station3 = BikeStation(dictionary: dictionary1)
+        let station2 = StationMarker(place: station3)
+        
+        station1.map = self.mapView
+        station2.map = self.mapView
+        println("debug console")
+    }
+    task.resume()
   }
   
   func mapView(mapView: GMSMapView!, markerInfoContents marker: GMSMarker!) -> UIView! {
