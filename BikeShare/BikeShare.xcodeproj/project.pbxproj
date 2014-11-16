@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5300DDBF1A10092E00D35E9A /* GCD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDB71A10092E00D35E9A /* GCD.swift */; };
+		5300DDC01A10092E00D35E9A /* Net.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDB81A10092E00D35E9A /* Net.swift */; };
+		5300DDC11A10092E00D35E9A /* NetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDB91A10092E00D35E9A /* NetData.swift */; };
+		5300DDC21A10092E00D35E9A /* NetDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBA1A10092E00D35E9A /* NetDownloadTask.swift */; };
+		5300DDC31A10092E00D35E9A /* NetHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBB1A10092E00D35E9A /* NetHelper.swift */; };
+		5300DDC41A10092E00D35E9A /* NetRequestSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBC1A10092E00D35E9A /* NetRequestSerialization.swift */; };
+		5300DDC51A10092E00D35E9A /* NetResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBD1A10092E00D35E9A /* NetResponseData.swift */; };
+		5300DDC61A10092E00D35E9A /* NetUploadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBE1A10092E00D35E9A /* NetUploadTask.swift */; };
 		535DFC221A05855B00C4DE37 /* StationMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535DFC211A05855B00C4DE37 /* StationMarker.swift */; };
 		53F5A14B1A01E6B2006160CE /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5A14A1A01E6B2006160CE /* GoogleMaps.framework */; };
 		53F5A14D1A01E829006160CE /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 53F5A14C1A01E829006160CE /* GoogleMaps.bundle */; };
@@ -44,6 +52,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5300DDB71A10092E00D35E9A /* GCD.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GCD.swift; sourceTree = "<group>"; };
+		5300DDB81A10092E00D35E9A /* Net.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Net.swift; sourceTree = "<group>"; };
+		5300DDB91A10092E00D35E9A /* NetData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetData.swift; sourceTree = "<group>"; };
+		5300DDBA1A10092E00D35E9A /* NetDownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetDownloadTask.swift; sourceTree = "<group>"; };
+		5300DDBB1A10092E00D35E9A /* NetHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetHelper.swift; sourceTree = "<group>"; };
+		5300DDBC1A10092E00D35E9A /* NetRequestSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetRequestSerialization.swift; sourceTree = "<group>"; };
+		5300DDBD1A10092E00D35E9A /* NetResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetResponseData.swift; sourceTree = "<group>"; };
+		5300DDBE1A10092E00D35E9A /* NetUploadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetUploadTask.swift; sourceTree = "<group>"; };
 		535DFC211A05855B00C4DE37 /* StationMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StationMarker.swift; path = BikeShare/Views/StationMarker.swift; sourceTree = SOURCE_ROOT; };
 		53F5A14A1A01E6B2006160CE /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
 		53F5A14C1A01E829006160CE /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
@@ -106,6 +122,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5300DDB61A10092E00D35E9A /* Net */ = {
+			isa = PBXGroup;
+			children = (
+				5300DDB71A10092E00D35E9A /* GCD.swift */,
+				5300DDB81A10092E00D35E9A /* Net.swift */,
+				5300DDB91A10092E00D35E9A /* NetData.swift */,
+				5300DDBA1A10092E00D35E9A /* NetDownloadTask.swift */,
+				5300DDBB1A10092E00D35E9A /* NetHelper.swift */,
+				5300DDBC1A10092E00D35E9A /* NetRequestSerialization.swift */,
+				5300DDBD1A10092E00D35E9A /* NetResponseData.swift */,
+				5300DDBE1A10092E00D35E9A /* NetUploadTask.swift */,
+			);
+			name = Net;
+			path = ../BikeShare/Net;
+			sourceTree = "<group>";
+		};
 		B48F645F19B22EB200710BEB = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +228,7 @@
 		B48F649D19B231D500710BEB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5300DDB61A10092E00D35E9A /* Net */,
 				53F5A1641A01E885006160CE /* SystemConfiguration.framework */,
 				53F5A1621A01E87F006160CE /* QuartzCore.framework */,
 				53F5A1601A01E879006160CE /* OpenGLES.framework */,
@@ -316,12 +349,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5300DDC11A10092E00D35E9A /* NetData.swift in Sources */,
+				5300DDBF1A10092E00D35E9A /* GCD.swift in Sources */,
 				535DFC221A05855B00C4DE37 /* StationMarker.swift in Sources */,
+				5300DDC31A10092E00D35E9A /* NetHelper.swift in Sources */,
 				B48F646E19B22EB200710BEB /* AppDelegate.swift in Sources */,
+				5300DDC21A10092E00D35E9A /* NetDownloadTask.swift in Sources */,
+				5300DDC01A10092E00D35E9A /* Net.swift in Sources */,
 				B48F649319B22F9400710BEB /* BikeStation.swift in Sources */,
 				B48F648E19B22F8700710BEB /* MapViewController.swift in Sources */,
 				B48F649A19B22F9B00710BEB /* UIViewExtension.swift in Sources */,
+				5300DDC41A10092E00D35E9A /* NetRequestSerialization.swift in Sources */,
+				5300DDC61A10092E00D35E9A /* NetUploadTask.swift in Sources */,
 				B48F649819B22F9B00710BEB /* MarkerInfoView.swift in Sources */,
+				5300DDC51A10092E00D35E9A /* NetResponseData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

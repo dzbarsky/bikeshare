@@ -1,70 +1,147 @@
-import UIKit
+import AVFoundation
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, AVCaptureMetadataOutputObjectsDelegate {
   @IBOutlet weak var mapView: GMSMapView!
   @IBOutlet weak var pinImageVerticalConstraint: NSLayoutConstraint!
-  //2
+
   let locationManager = CLLocationManager()
-  
-  var mapRadius: Double {
-    get {
-      let region = mapView.projection.visibleRegion()
-      let center = mapView.camera.target
-      
-      let north = CLLocation(latitude: region.farLeft.latitude, longitude: center.longitude)
-      let south = CLLocation(latitude: region.nearLeft.latitude, longitude: center.longitude)
-      let west = CLLocation(latitude: center.latitude, longitude: region.farLeft.longitude)
-      let east = CLLocation(latitude: center.latitude, longitude: region.farRight.longitude)
-      
-      let verticalDistance = north.distanceFromLocation(south)
-      let horizontalDistance = west.distanceFromLocation(east)
-      return max(horizontalDistance, verticalDistance)*0.5
-    }
-  }
+  let net = Net()
+  var isUnlockingBike = false
+  var previewLayer = CALayer()
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    //3
     locationManager.delegate = self
     mapView.delegate = self
     locationManager.requestWhenInUseAuthorization()
+    println("setting up qr stuff")
+    let session = AVCaptureSession()
+    let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+    
+    let input = AVCaptureDeviceInput.deviceInputWithDevice(device, error: nil) as AVCaptureDeviceInput
+    session.addInput(input)
+    println("added input")
+    let output = AVCaptureMetadataOutput()
+    output.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
+    session.addOutput(output)
+    output.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
+    println("added output")
+    
+    previewLayer = AVCaptureVideoPreviewLayer(session: session)
+    let bounds = self.view.layer.bounds
+    println(bounds)
+    //previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+    previewLayer.bounds = bounds
+    previewLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds))
+    previewLayer.hidden = true
+    
+    println("adding sublayer")
+    self.view.layer.addSublayer(previewLayer)
+    println("running")
+    session.startRunning()
+    println("started")
   }
   
   func fetchStations(coordinate: CLLocationCoordinate2D) {
     
     mapView.clear()
 
-    let url = NSURL(string: "http://www.bikester.herokuapp.com/bikes")
+    let url = NSURL(string: "http://sd-bikeshare.herokuapp.com/stations")
     
     let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-        println(NSString(data: data, encoding: NSUTF8StringEncoding))
-        let dictionary = ["address" : "4043 Locust St", "lat" : 39.953362, "lng" : -75.204573]
-        let station = BikeStation(dictionary: dictionary)
-        let station1 = StationMarker(place: station)
-        
-        
-        let dictionary1 = ["address" : "Huntsman", "lat" : 39.9529106, "lng" : -75.1982674]
-        let station3 = BikeStation(dictionary: dictionary1)
-        let station2 = StationMarker(place: station3)
-        
-        station1.map = self.mapView
-        station2.map = self.mapView
-        println("debug console")
+        let stations = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as [NSDictionary]
+        for stationJSON in stations {
+            let marker = StationMarker(station: BikeStation(dictionary: stationJSON))
+            marker.map = self.mapView
+        }
     }
     task.resume()
   }
   
+  func mapView(mapView: GMSMapView!, didTapInfoWindowOfMarker marker: GMSMarker!) {
+    let stationMarker = mapView.selectedMarker as StationMarker
+    println(stationMarker)
+    
+    let url = "http://sd-bikeshare.herokuapp.com/stations/\(stationMarker.station.id)/reserve?user=545fb828e4b0d65c29c4b567"
+    println(url)
+    
+    previewLayer.hidden = false
+    
+    net.POST(url, params: [:],
+      successHandler: { responseData in
+        let result = responseData.json(error: nil)
+        NSLog("result: \(result)")
+        println("reserved!")
+      },
+      
+      failureHandler: { error in
+        println("error")
+        NSLog("Error")
+      }
+    )
+    
+    /*Utility.post([:], url: url) { (succeeded: Bool, msg: String) -> () in
+      var alert = UIAlertView(title: "Success!", message: msg, delegate: nil, cancelButtonTitle: "Okay.")
+      if(succeeded) {
+        //self.captureQRCode()
+        alert.title = "Success!"
+        alert.message = msg
+      } else {
+        alert.title = "Failed : ("
+        alert.message = msg
+      }
+      
+      // Move to the UI thread
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        // Show the alert
+        alert.show()
+      })
+    }*/
+  }
+  
+  func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+    println("capturing output")
+    if isUnlockingBike {
+      return
+    }
+    for item in metadataObjects {
+      if let metadataObject = item as? AVMetadataMachineReadableCodeObject {
+        if metadataObject.type == AVMetadataObjectTypeQRCode {
+          previewLayer.hidden = true
+          let url = "http://sd-bikeshare.herokuapp.com/bikes/\(metadataObject.stringValue)/unlock?user=545ead784183483e5f58ce94"
+          isUnlockingBike = true
+          net.POST(url, params: [:], successHandler: { responseData in
+            let result = responseData.json(error: nil)
+            NSLog("result: \(result)")
+            }, failureHandler: { error in
+              self.isUnlockingBike = true
+              NSLog("Error")
+          })
+          
+          /*Utility.post([:], url: url) { (succeeded: Bool, msg: String) -> () in
+            var alert = UIAlertView(title: "Success!", message: msg, delegate: nil, cancelButtonTitle: "Okay.")
+            if(succeeded) {
+              alert.title = "Success!"
+              alert.message = msg
+            } else {
+              alert.title = "Failed : ("
+              alert.message = msg
+            }
+          }*/
+        }
+      }
+    }
+  }
+  
   func mapView(mapView: GMSMapView!, markerInfoContents marker: GMSMarker!) -> UIView! {
 
-    println("marker clicked")
     let stationMarker = marker as StationMarker
-    println(stationMarker)
     if let infoView = UIView.viewFromNibName("MarkerInfoView") as? MarkerInfoView {
-      infoView.nameLabel.text = stationMarker.place.address
+      infoView.nameLabel.text = stationMarker.station.name
       return infoView
-    } else {
-      return nil
     }
+    
+    return nil
   }
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -76,36 +153,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     }
   }
   
-  /*
-  // MARK: - Types Controller Delegate
-  func typesController(controller: TypesTableViewController, didSelectTypes types: [String]) {
+  /*  func typesController(controller: TypesTableViewController, didSelectTypes types: [String]) {
     searchedTypes = sorted(controller.selectedTypes)
     dismissViewControllerAnimated(true, completion: nil)
   }*/
   
   func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-    // 2
     if status == .AuthorizedWhenInUse {
-      
-      // 3
       locationManager.startUpdatingLocation()
-      
-      //4
       mapView.myLocationEnabled = true
       mapView.settings.myLocationButton = true
     }
   }
   
-  // 5
   func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
     if let location = locations.first as? CLLocation {
-      
-      // 6
       mapView.camera = GMSCameraPosition(target: location.coordinate, zoom: 15, bearing: 0, viewingAngle: 0)
-      
-      // 7
       locationManager.stopUpdatingLocation()
-      
       fetchStations(location.coordinate)
     }
   }

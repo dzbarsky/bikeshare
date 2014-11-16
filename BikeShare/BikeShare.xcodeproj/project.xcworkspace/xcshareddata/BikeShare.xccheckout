@@ -12,6 +12,8 @@
 	<dict>
 		<key>4A9ADD0F14A91CC5829A3407A226785DAF20A625</key>
 		<string>https://github.com/dzbarsky/bikeshare.git</string>
+		<key>836C22F715676A39D26E5DC3733D79DCB81ADEA3</key>
+		<string>https://github.com/nghialv/Net.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>BikeShare/BikeShare.xcodeproj</string>
@@ -19,6 +21,8 @@
 	<dict>
 		<key>4A9ADD0F14A91CC5829A3407A226785DAF20A625</key>
 		<string>../../..</string>
+		<key>836C22F715676A39D26E5DC3733D79DCB81ADEA3</key>
+		<string>../../../BikeShare/BikeShare/Net</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/dzbarsky/bikeshare.git</string>
@@ -35,6 +39,14 @@
 			<string>4A9ADD0F14A91CC5829A3407A226785DAF20A625</string>
 			<key>IDESourceControlWCCName</key>
 			<string>bikeshare</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>836C22F715676A39D26E5DC3733D79DCB81ADEA3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Net</string>
 		</dict>
 	</array>
 </dict>

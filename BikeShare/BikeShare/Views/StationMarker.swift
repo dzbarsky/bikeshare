@@ -8,13 +8,13 @@
 
 class StationMarker: GMSMarker {
 
-  let place: BikeStation
+  let station: BikeStation
     
-  init(place: BikeStation) {
-    self.place = place
+  init(station: BikeStation) {
+    self.station = station
     super.init()
     
-    position = place.coordinate
+    position = station.coordinate
     icon = UIImage(named: "bar_pin")
     groundAnchor = CGPoint(x: 0.5, y: 1)
     appearAnimation = kGMSMarkerAnimationPop
