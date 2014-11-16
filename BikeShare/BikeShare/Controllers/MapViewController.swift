@@ -6,6 +6,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
 
   let locationManager = CLLocationManager()
   let net = Net()
+  let userId = "545fb828e4b0d65c29c4b567"
   var isUnlockingBike = false
   var previewLayer = CALayer()
   
@@ -62,7 +63,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     let stationMarker = mapView.selectedMarker as StationMarker
     println(stationMarker)
     
-    let url = "http://sd-bikeshare.herokuapp.com/stations/\(stationMarker.station.id)/reserve?user=545fb828e4b0d65c29c4b567"
+    let url = "http://sd-bikeshare.herokuapp.com/stations/\(stationMarker.station.id)/reserve?user=\(userId)"
     println(url)
     
     previewLayer.hidden = false
@@ -108,7 +109,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
       if let metadataObject = item as? AVMetadataMachineReadableCodeObject {
         if metadataObject.type == AVMetadataObjectTypeQRCode {
           previewLayer.hidden = true
-          let url = "http://sd-bikeshare.herokuapp.com/bikes/\(metadataObject.stringValue)/unlock?user=545ead784183483e5f58ce94"
+          let url = "http://sd-bikeshare.herokuapp.com/bikes/\(metadataObject.stringValue)/unlock?user=\(userId)"
           isUnlockingBike = true
           net.POST(url, params: [:], successHandler: { responseData in
             let result = responseData.json(error: nil)
