@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BikeShare/Controllers/MapViewController.swift"
-            timestampString = "437865455.770994"
+            timestampString = "438034512.898974"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "locationManager(_:didUpdateLocations:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "BikeShare/Controllers/MapViewController.swift"
-            timestampString = "437865455.770994"
+            timestampString = "438032925.295429"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "12"
-            endingLineNumber = "12"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "MapViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "BikeShare/Controllers/MapViewController.swift"
+            timestampString = "438034605.125002"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "MapViewController"
             landmarkType = "3">
          </BreakpointContent>

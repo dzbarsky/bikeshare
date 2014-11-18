@@ -1,4 +1,6 @@
 import AVFoundation
+import Foundation
+import Darwin
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapViewDelegate, AVCaptureMetadataOutputObjectsDelegate {
   @IBOutlet weak var mapView: GMSMapView!
@@ -9,6 +11,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
   let userId = "545fb828e4b0d65c29c4b567"
   var isUnlockingBike = false
   var previewLayer = CALayer()
+  var reservationExpiration = NSTimeInterval()
+  var timer = NSTimer()
+  var label = UILabel()
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -59,6 +64,28 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     task.resume()
   }
   
+  func updateTimer() {
+    let now = NSDate().timeIntervalSince1970 * 1000
+    let remaining = reservationExpiration - now
+    
+    if remaining < 0 {
+      previewLayer.hidden = true
+      isUnlockingBike = false
+      timer.invalidate()
+      label.removeFromSuperview()
+      var alert = UIAlertController(title: "Reservation Expired!", message: "", preferredStyle: UIAlertControllerStyle.Alert)
+      alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default, handler: nil))
+      self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    let seconds = Int(remaining / 1000) % 60
+    let minutes = Int(remaining / 60000)
+    
+    dispatch_async(dispatch_get_main_queue()) {
+      self.label.text = String(format:"%02d:%02d", minutes, seconds)
+    }
+  }
+  
   func mapView(mapView: GMSMapView!, didTapInfoWindowOfMarker marker: GMSMarker!) {
     let stationMarker = mapView.selectedMarker as StationMarker
     println(stationMarker)
@@ -66,13 +93,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     let url = "http://sd-bikeshare.herokuapp.com/stations/\(stationMarker.station.id)/reserve?user=\(userId)"
     println(url)
     
+    label = UILabel(frame: CGRectMake(0, 0, 200, 21))
+    label.center = CGPointMake(160, 284)
+    label.textColor = UIColor.redColor()
+    label.textAlignment = NSTextAlignment.Center
+    label.text = "I'm a test label"
+    self.view.addSubview(label)
+
     previewLayer.hidden = false
     
     net.POST(url, params: [:],
       successHandler: { responseData in
-        let result = responseData.json(error: nil)
-        NSLog("result: \(result)")
-        println("reserved!")
+        let result = responseData.json(error: nil)! as NSDictionary
+        if let expiration = result["expiration"] as? NSTimeInterval {
+          self.reservationExpiration = expiration
+          dispatch_async(dispatch_get_main_queue()) {
+            self.timer = NSTimer.scheduledTimerWithTimeInterval(0, target: self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
+          }
+        }
       },
       
       failureHandler: { error in
@@ -101,7 +139,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
   }
   
   func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
-    println("capturing output")
     if isUnlockingBike {
       return
     }
