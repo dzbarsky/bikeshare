@@ -7,6 +7,8 @@ function model
 
     bikes = [15; 15; 15; 15; 15];
     capacities = [30; 30; 30; 30; 30];
+    figure
+    bar(bikes; [0])
 
 
     % Returns an integer
@@ -47,6 +49,8 @@ function model
             bikes(startStation) = bikes(startStation) - 1;
             bikes(endStation) = bikes(endStation) + 1;
         end
+        bar(bikes)
+        pause(0.01)
     end
 
     bikes
