@@ -58,7 +58,7 @@ function model
         bikes(minIndex) = bikes(minIndex) + 1;
         bikes(maxIndex) = bikes(maxIndex) - 1;
         
-        cost = 10;
+        cost = cost_to_move(1)
     end
 
     % Another easy heuristic - if stations have less than 25% bikes,
@@ -98,6 +98,7 @@ function model
         end
         
         % Simulate any rebalancing that occurred this time tick.
+        %totalCost = totalCost + simplest_rebalance();
         totalCost = totalCost + balanced_rebalance();
     end
 
