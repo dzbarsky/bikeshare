@@ -12,12 +12,13 @@ function script
     % Returns an integer
     function trips_per_tick
         % Assumes a random distribution 0 to 10, fix this
-        round(rand() * 10)
+        round(rand() * 10);
     end
 
 
     % Simulate 1000 time ticks
     for i = 0:1000
+        disp "tripCount"
         tripCount = trips_per_tick()
         % Simulate each trip that occurred this time tick.
         for j = 1:tripCount
