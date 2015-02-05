@@ -7,7 +7,7 @@ function model
 
     bikes = [15; 15; 15; 15; 15];
     capacities = [30; 30; 30; 30; 30];
-    unhappy_customers = 0
+    unhappy_customers = 0;
 
     % Returns an integer
     function trips = trips_per_tick()
@@ -58,7 +58,7 @@ function model
         bikes(minIndex) = bikes(minIndex) + 1;
         bikes(maxIndex) = bikes(maxIndex) - 1;
         
-        cost = cost_to_move(1)
+        cost = cost_to_move(1);
     end
 
     % Another easy heuristic - if stations have less than 25% bikes,
