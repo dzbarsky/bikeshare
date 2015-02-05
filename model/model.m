@@ -7,7 +7,16 @@ function model
 
     bikes = [15; 15; 15; 15; 15];
     capacities = [30; 30; 30; 30; 30];
-    unhappy_customers = 0;
+
+    labels = {0, 'Rodin', 'Huntsman', 'Ware', 'PSA', 'Hill'...
+        , 'Empty', 'Cost'};
+
+    figure
+    axis([0, 8, 0, max(capacities)])
+    axis manual
+    set(gca,'XTickLabel',labels)
+    hold on
+    bar([ bikes; unhappy_customers; 0 ])
 
     % Returns an integer
     function trips = trips_per_tick()
@@ -17,7 +26,7 @@ function model
 
     function cost = cost_to_move(bikes)
         % Picked a random function here.  Need to think about this.
-        cost = 5 * bikes + 7;
+        cost = (5 * bikes + 7) / 100;
     end
 
     function [] = simulate_trip()
@@ -41,7 +50,7 @@ function model
         if bikes(endStation) >= capacities(endStation)
            strcat('end station ', int2str(endStation),' is full')
            unhappy_customers = unhappy_customers + 1;
-           return 
+           return
         end
 
         % FIXME: Trips here are assumed to be instantaneous, but maybe they
@@ -49,15 +58,15 @@ function model
         bikes(startStation) = bikes(startStation) - 1;
         bikes(endStation) = bikes(endStation) + 1;
     end
-    
+
     % Simplest heuristic - move 1 bike from biggest station to smallest
     function cost = simplest_rebalance()
         [~, maxIndex] = max(bikes);
         [~, minIndex] = min(bikes);
-        
+
         bikes(minIndex) = bikes(minIndex) + 1;
         bikes(maxIndex) = bikes(maxIndex) - 1;
-        
+
         cost = cost_to_move(1);
     end
 
@@ -68,26 +77,26 @@ function model
     function cost = balanced_rebalance()
         [maxBikes, maxIndex] = max(bikes);
         [minBikes, minIndex] = min(bikes);
-        
+
         bikesToMoveToMin = 0;
         bikesToMoveToMax = 0;
-        
+
         if (minBikes < capacities(minIndex) / 4)
             bikesToMoveToMin = capacities(minIndex) / 2 - minBikes;
         end
-        
+
         if (minBikes > 3 * capacities(minIndex) / 4)
             bikesToMoveToMax = maxBikes - capacities(minIndex) / 2;
         end
-        
+
         bikesMoving = max(bikesToMoveToMin, bikesToMoveToMax);
-        
+
         bikes(minIndex) = bikes(minIndex) + bikesMoving;
         bikes(maxIndex) = bikes(maxIndex) - bikesMoving;
-        
+
         cost = cost_to_move(bikesMoving);
     end
-    
+
     % Simulate 1000 time ticks
     totalCost = 0;
     for i = 0:1000
@@ -96,10 +105,21 @@ function model
         for j = 1:tripCount
             simulate_trip();
         end
-        
+
         % Simulate any rebalancing that occurred this time tick.
         %totalCost = totalCost + simplest_rebalance();
         totalCost = totalCost + balanced_rebalance();
+
+        % Redraw graph
+        hold off
+        clf
+        axis([0, 8, 0, max(capacities)])
+        axis manual
+        set(gca,'XTickLabel',labels)
+        hold on
+        bar([ bikes; unhappy_customers; totalCost ])
+        pause(0.01)
+        
     end
 
     bikes
