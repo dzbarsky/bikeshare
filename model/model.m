@@ -48,7 +48,7 @@ function model
     end
 
     function [] = simulate_trip(hour)
-        startStation = floor(rand() * 5) + 1;
+        startStation = floor(rand() * STATION_NUM) + 1;
         if bikes(startStation) <= 0
             strcat('start station ', int2str(startStation),' is empty')
             unhappy_customers = unhappy_customers + 1;
@@ -57,7 +57,7 @@ function model
 
         trip = rand();
 
-        for endStation = 1:5
+        for endStation = 1:STATION_NUM
             if trip < transitions(hour + 1, startStation, endStation)
                 break
             else
