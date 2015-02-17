@@ -8,13 +8,26 @@ function model
     starts = dlmread(START_FILENAME)
     
     TRANSITIONS_FILENAME = 'july-2013.matrix';
+
+    bikes = 20 * ones(STATION_NUM);
+    capacities = 40 * ones(STATION_NUM);
+    
     transitions = ones(24, STATION_NUM, STATION_NUM);
     for hour = 0:23
         range = [hour * STATION_NUM, 0, (hour + 1) * STATION_NUM - 1, STATION_NUM - 1];
         transitions(hour + 1, :, :) = dlmread(TRANSITIONS_FILENAME, '', range);
     end
-    bikes = 20 * ones(STATION_NUM);
-    capacities = 40 * ones(STATION_NUM);
+    
+    FILENAME = 'july-2013-start.matrix';
+    starts = ones(24, STATION_NUM);
+    for hour = 0:23
+        range = [hour * STATION_NUM, 0, (hour + 1) * STATION_NUM - 1, 0];
+        starts(hour + 1, :) = dlmread(FILENAME, '', range);
+    end
+    
+    FILENAME = 'july-2013-tripcounts.matrix';
+    range = [0, 0, 23, 1];
+    counts = dlmread(FILENAME, '', range);
 
     %{
     figure
@@ -26,11 +39,7 @@ function model
     %}
     % Returns an integer
     function trips = trips_per_tick(hour)
-        % Assumes a random distribution 0 to 10, fix this
-        % trips = round(rand() * 10);
-        
-        % NORMAL DISTRIBUTION
-        
+        trips = floor(normrnd(counts(hour + 1, 1), counts(hour + 1, 2)^.5) / 6);
     end
 
     function cost = cost_to_move(bikes)
@@ -39,14 +48,13 @@ function model
     end
 
     function [] = simulate_trip(hour)
-        %startStation = floor(rand() * 5) + 1;
         
-        num = rand();
+        trip = rand();
         for startStation = 1:STATION_NUM
-            if num < starts(hour + 1, startStation)
+            if trip < starts(hour + 1, startStation)
                 break
             else
-                num = num - starts(hour + 1, startStation)
+                trip = trip - starts(hour + 1, startStation)
             end
         end
         
@@ -57,7 +65,6 @@ function model
         end
 
         trip = rand();
-
         for endStation = 1:STATION_NUM
             if trip < transitions(hour + 1, startStation, endStation)
                 break
@@ -119,10 +126,11 @@ function model
     % Simulate 1000 time ticks
     totalCost = 0;
     for i = 1:143
-        tripCount = trips_per_tick(floor(i / 6));
+        hour = floor(i / 6);
+        tripCount = trips_per_tick(hour);
         % Simulate each trip that occurred this time tick.
         for j = 1:tripCount
-            simulate_trip(floor(i / 6));
+            simulate_trip(hour);
         end
 
         % Simulate any rebalancing that occurred this time tick.
