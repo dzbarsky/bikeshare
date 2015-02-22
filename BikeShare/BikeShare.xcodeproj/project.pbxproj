@@ -15,9 +15,9 @@
 		5300DDC41A10092E00D35E9A /* NetRequestSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBC1A10092E00D35E9A /* NetRequestSerialization.swift */; };
 		5300DDC51A10092E00D35E9A /* NetResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBD1A10092E00D35E9A /* NetResponseData.swift */; };
 		5300DDC61A10092E00D35E9A /* NetUploadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5300DDBE1A10092E00D35E9A /* NetUploadTask.swift */; };
+		532F923D1A9A730C00FA4B7B /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 532F923C1A9A730C00FA4B7B /* GoogleMaps.framework */; };
+		532F923F1A9A733B00FA4B7B /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 532F923E1A9A733B00FA4B7B /* GoogleMaps.bundle */; };
 		535DFC221A05855B00C4DE37 /* StationMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 535DFC211A05855B00C4DE37 /* StationMarker.swift */; };
-		53F5A14B1A01E6B2006160CE /* GoogleMaps.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5A14A1A01E6B2006160CE /* GoogleMaps.framework */; };
-		53F5A14D1A01E829006160CE /* GoogleMaps.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 53F5A14C1A01E829006160CE /* GoogleMaps.bundle */; };
 		53F5A14F1A01E83F006160CE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5A14E1A01E83F006160CE /* AVFoundation.framework */; };
 		53F5A1511A01E846006160CE /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5A1501A01E846006160CE /* CoreData.framework */; };
 		53F5A1531A01E84E006160CE /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F5A1521A01E84E006160CE /* CoreLocation.framework */; };
@@ -60,9 +60,9 @@
 		5300DDBC1A10092E00D35E9A /* NetRequestSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetRequestSerialization.swift; sourceTree = "<group>"; };
 		5300DDBD1A10092E00D35E9A /* NetResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetResponseData.swift; sourceTree = "<group>"; };
 		5300DDBE1A10092E00D35E9A /* NetUploadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetUploadTask.swift; sourceTree = "<group>"; };
+		532F923C1A9A730C00FA4B7B /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
+		532F923E1A9A733B00FA4B7B /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		535DFC211A05855B00C4DE37 /* StationMarker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StationMarker.swift; path = BikeShare/Views/StationMarker.swift; sourceTree = SOURCE_ROOT; };
-		53F5A14A1A01E6B2006160CE /* GoogleMaps.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleMaps.framework; sourceTree = "<group>"; };
-		53F5A14C1A01E829006160CE /* GoogleMaps.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = GoogleMaps.bundle; path = GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle; sourceTree = "<group>"; };
 		53F5A14E1A01E83F006160CE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		53F5A1501A01E846006160CE /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		53F5A1521A01E84E006160CE /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -105,10 +105,10 @@
 				53F5A1591A01E85D006160CE /* ImageIO.framework in Frameworks */,
 				53F5A1571A01E858006160CE /* GLKit.framework in Frameworks */,
 				53F5A1551A01E852006160CE /* CoreText.framework in Frameworks */,
+				532F923D1A9A730C00FA4B7B /* GoogleMaps.framework in Frameworks */,
 				53F5A1531A01E84E006160CE /* CoreLocation.framework in Frameworks */,
 				53F5A1511A01E846006160CE /* CoreData.framework in Frameworks */,
 				53F5A14F1A01E83F006160CE /* AVFoundation.framework in Frameworks */,
-				53F5A14B1A01E6B2006160CE /* GoogleMaps.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +229,8 @@
 		B48F649D19B231D500710BEB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				532F923E1A9A733B00FA4B7B /* GoogleMaps.bundle */,
+				532F923C1A9A730C00FA4B7B /* GoogleMaps.framework */,
 				5300DDB61A10092E00D35E9A /* Net */,
 				53F5A1641A01E885006160CE /* SystemConfiguration.framework */,
 				53F5A1621A01E87F006160CE /* QuartzCore.framework */,
@@ -242,8 +244,6 @@
 				53F5A1521A01E84E006160CE /* CoreLocation.framework */,
 				53F5A1501A01E846006160CE /* CoreData.framework */,
 				53F5A14E1A01E83F006160CE /* AVFoundation.framework */,
-				53F5A14C1A01E829006160CE /* GoogleMaps.bundle */,
-				53F5A14A1A01E6B2006160CE /* GoogleMaps.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -332,7 +332,7 @@
 				B48F647319B22EB200710BEB /* Main.storyboard in Resources */,
 				B48F649919B22F9B00710BEB /* MarkerInfoView.xib in Resources */,
 				B48F647519B22EB200710BEB /* Images.xcassets in Resources */,
-				53F5A14D1A01E829006160CE /* GoogleMaps.bundle in Resources */,
+				532F923F1A9A733B00FA4B7B /* GoogleMaps.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

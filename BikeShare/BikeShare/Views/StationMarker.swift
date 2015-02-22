@@ -15,17 +15,17 @@ class StationMarker: GMSMarker {
     super.init()
     
     position = station.coordinate
-    icon = UIImage(named: "rsz_1bike")
+    icon = UIImage(named: "station")
     groundAnchor = CGPoint(x: 0.5, y: 1)
     appearAnimation = kGMSMarkerAnimationPop
   }
   
   func highlight() {
-    icon = UIImage(named: "bike_highlight")
+    icon = UIImage(named: "station-gold")
   }
   
   func disable() {
-    icon = UIImage(named: "bike_disabled")
+    icon = UIImage(named: "station-grey")
   }
   
 }

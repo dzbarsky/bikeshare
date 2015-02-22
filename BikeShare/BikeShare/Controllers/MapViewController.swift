@@ -50,26 +50,34 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
   
   func fetchStations(coordinate: CLLocationCoordinate2D) {
     
+    println("fetching")
     mapView.clear()
 
     let url = NSURL(string: "http://sd-bikeshare.herokuapp.com/stations")
     
     let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
+      
+      println("about to deserialize")
       let stations = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as [NSDictionary]
+      
+      println("deserialized")
       var closestMarker : StationMarker? = nil
       var minDistance : CLLocationDistance = 9999999
+      println("getting min distance")
       for stationJSON in stations {
-          let marker = StationMarker(station: BikeStation(dictionary: stationJSON))
-          marker.map = self.mapView
-          let currentDistance = GMSGeometryDistance(coordinate, marker.station.coordinate)
-          if currentDistance < minDistance {
-            minDistance = currentDistance
-            closestMarker = marker
-          }
+        let marker = StationMarker(station: BikeStation(dictionary: stationJSON))
+        marker.map = self.mapView
+        let currentDistance = GMSGeometryDistance(coordinate, marker.station.coordinate)
+        if currentDistance < minDistance {
+          println("updating min")
+          minDistance = currentDistance
+          closestMarker = marker
+        }
       }
   
       closestMarker?.highlight()
       let bounds = GMSCoordinateBounds(coordinate: coordinate, coordinate: closestMarker!.station.coordinate)
+      println("creating bounds")
       let insets = UIEdgeInsetsMake(20, 20, 20, 20)
       let camera = self.mapView.cameraForBounds(bounds, insets: insets)
       self.mapView.animateToCameraPosition(camera)
