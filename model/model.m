@@ -1,33 +1,21 @@
 function model
-    %{
-    P = [.4, .1, .3, .1, .1;
-         .1, .1, .5, .1, .2;
-         .2, .3, .3, .1, .1;
-         .2, .2, .2, .2, .2;
-         .2, .3, .1, .1, .3];
-    
-
-    bikes = [15; 15; 15; 15; 15];
-    capacities = [30; 30; 30; 30; 30];
-
-
-    labels = {0, 'Rodin', 'Huntsman', 'Ware', 'PSA', 'Hill'...
-        , 'Empty', 'Cost'};
-
-    %}
    
     unhappy_customers = 0;
     
     STATION_NUM = 329;
+    
+    START_FILENAME = 'july-2013_start.matrix';
+    starts = dlmread(START_FILENAME)
+    
+    TRANSITIONS_FILENAME = 'july-2013.matrix';
+
     bikes = 20 * ones(STATION_NUM);
     capacities = 40 * ones(STATION_NUM);
     
-    
-    FILENAME = 'july-2013.matrix';
     transitions = ones(24, STATION_NUM, STATION_NUM);
     for hour = 0:23
         range = [hour * STATION_NUM, 0, (hour + 1) * STATION_NUM - 1, STATION_NUM - 1];
-        transitions(hour + 1, :, :) = dlmread(FILENAME, '', range);
+        transitions(hour + 1, :, :) = dlmread(TRANSITIONS_FILENAME, '', range);
     end
     
     FILENAME = 'july-2013-start.matrix';
@@ -60,12 +48,13 @@ function model
     end
 
     function [] = simulate_trip(hour)
+        
         trip = rand();
         for startStation = 1:STATION_NUM
             if trip < starts(hour + 1, startStation)
                 break
             else
-                trip = trip - starts(hour + 1, startStation);
+                trip = trip - starts(hour + 1, startStation)
             end
         end
         
