@@ -137,24 +137,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         NSLog("Error")
       }
     )
-    
-    /*Utility.post([:], url: url) { (succeeded: Bool, msg: String) -> () in
-      var alert = UIAlertView(title: "Success!", message: msg, delegate: nil, cancelButtonTitle: "Okay.")
-      if(succeeded) {
-        //self.captureQRCode()
-        alert.title = "Success!"
-        alert.message = msg
-      } else {
-        alert.title = "Failed : ("
-        alert.message = msg
-      }
-      
-      // Move to the UI thread
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        // Show the alert
-        alert.show()
-      })
-    }*/
   }
   
   func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
