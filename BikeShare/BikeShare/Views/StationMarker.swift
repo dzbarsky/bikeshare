@@ -20,4 +20,12 @@ class StationMarker: GMSMarker {
     appearAnimation = kGMSMarkerAnimationPop
   }
   
+  func highlight() {
+    icon = UIImage(named: "bike_highlight")
+  }
+  
+  func disable() {
+    icon = UIImage(named: "bike_disabled")
+  }
+  
 }

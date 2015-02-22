@@ -55,11 +55,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     let url = NSURL(string: "http://sd-bikeshare.herokuapp.com/stations")
     
     let task = NSURLSession.sharedSession().dataTaskWithURL(url!) {(data, response, error) in
-        let stations = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as [NSDictionary]
-        for stationJSON in stations {
-            let marker = StationMarker(station: BikeStation(dictionary: stationJSON))
-            marker.map = self.mapView
-        }
+      let stations = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as [NSDictionary]
+      var closestMarker : StationMarker? = nil
+      var minDistance : CLLocationDistance = 9999999
+      for stationJSON in stations {
+          let marker = StationMarker(station: BikeStation(dictionary: stationJSON))
+          marker.map = self.mapView
+          let currentDistance = GMSGeometryDistance(coordinate, marker.station.coordinate)
+          if currentDistance < minDistance {
+            minDistance = currentDistance
+            closestMarker = marker
+          }
+      }
+  
+      closestMarker?.highlight()
+      let bounds = GMSCoordinateBounds(coordinate: coordinate, coordinate: closestMarker!.station.coordinate)
+      let insets = UIEdgeInsetsMake(20, 20, 20, 20)
+      let camera = self.mapView.cameraForBounds(bounds, insets: insets)
+      self.mapView.animateToCameraPosition(camera)
     }
     task.resume()
   }
@@ -102,8 +115,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
 
     previewLayer.hidden = false
     
+    println("viewing map")
     net.POST(url, params: [:],
       successHandler: { responseData in
+        println("post success handler")
         let result = responseData.json(error: nil)! as NSDictionary
         if let expiration = result["expiration"] as? NSTimeInterval {
           self.reservationExpiration = expiration
@@ -139,6 +154,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
   }
   
   func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+    println("capturing output")
     if isUnlockingBike {
       return
     }

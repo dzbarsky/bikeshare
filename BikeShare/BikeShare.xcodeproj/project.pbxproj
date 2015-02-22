@@ -165,7 +165,6 @@
 				B48F646D19B22EB200710BEB /* AppDelegate.swift */,
 				B48F648A19B22EFC00710BEB /* Controllers */,
 				B48F648B19B22F0600710BEB /* Model */,
-				B48F648C19B22F0B00710BEB /* Views */,
 				B48F647119B22EB200710BEB /* Main.storyboard */,
 				B48F647419B22EB200710BEB /* Images.xcassets */,
 				B48F646B19B22EB200710BEB /* Supporting Files */,
@@ -209,6 +208,7 @@
 		B48F648B19B22F0600710BEB /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B48F648C19B22F0B00710BEB /* Views */,
 				B48F649019B22F9400710BEB /* BikeStation.swift */,
 			);
 			path = Model;
@@ -222,7 +222,8 @@
 				B48F649619B22F9B00710BEB /* MarkerInfoView.xib */,
 				B48F649719B22F9B00710BEB /* UIViewExtension.swift */,
 			);
-			path = Views;
+			name = Views;
+			path = ../Views;
 			sourceTree = "<group>";
 		};
 		B48F649D19B231D500710BEB /* Frameworks */ = {
