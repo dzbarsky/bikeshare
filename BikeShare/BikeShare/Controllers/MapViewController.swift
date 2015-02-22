@@ -20,32 +20,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     locationManager.delegate = self
     mapView.delegate = self
     locationManager.requestWhenInUseAuthorization()
-    println("setting up qr stuff")
     let session = AVCaptureSession()
     let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
     
     let input = AVCaptureDeviceInput.deviceInputWithDevice(device, error: nil) as AVCaptureDeviceInput
     session.addInput(input)
-    println("added input")
     let output = AVCaptureMetadataOutput()
     output.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
     session.addOutput(output)
     output.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
-    println("added output")
     
     previewLayer = AVCaptureVideoPreviewLayer(session: session)
     let bounds = self.view.layer.bounds
-    println(bounds)
-    //previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
     previewLayer.bounds = bounds
     previewLayer.position = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds))
     previewLayer.hidden = true
     
-    println("adding sublayer")
     self.view.layer.addSublayer(previewLayer)
-    println("running")
     session.startRunning()
-    println("started")
   }
   
   func fetchStations(coordinate: CLLocationCoordinate2D) {
@@ -62,25 +54,27 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
       
       println("deserialized")
       var closestMarker : StationMarker? = nil
-      var minDistance : CLLocationDistance = 9999999
+      var minDistance = CLLocationDistance.infinity
       println("getting min distance")
       for stationJSON in stations {
         let marker = StationMarker(station: BikeStation(dictionary: stationJSON))
         marker.map = self.mapView
         let currentDistance = GMSGeometryDistance(coordinate, marker.station.coordinate)
-        if currentDistance < minDistance {
+        if (currentDistance < minDistance && marker.hasBikes()) {
           println("updating min")
           minDistance = currentDistance
           closestMarker = marker
         }
       }
-  
-      closestMarker?.highlight()
-      let bounds = GMSCoordinateBounds(coordinate: coordinate, coordinate: closestMarker!.station.coordinate)
-      println("creating bounds")
-      let insets = UIEdgeInsetsMake(20, 20, 20, 20)
-      let camera = self.mapView.cameraForBounds(bounds, insets: insets)
-      self.mapView.animateToCameraPosition(camera)
+      
+      if let marker = closestMarker {
+        marker.highlight()
+        let bounds = GMSCoordinateBounds(coordinate: coordinate, coordinate: marker.station.coordinate)
+        println("creating bounds")
+        let insets = UIEdgeInsetsMake(80, 80, 80, 80)
+        let camera = self.mapView.cameraForBounds(bounds, insets: insets)
+        self.mapView.animateToCameraPosition(camera)
+      }
     }
     task.resume()
   }
@@ -110,6 +104,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
   func mapView(mapView: GMSMapView!, didTapInfoWindowOfMarker marker: GMSMarker!) {
     let stationMarker = mapView.selectedMarker as StationMarker
     println(stationMarker)
+    if !stationMarker.hasBikes() {
+      return
+    }
     
     let url = "http://sd-bikeshare.herokuapp.com/stations/\(stationMarker.station.id)/reserve?user=\(userId)"
     println(url)
@@ -123,7 +120,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
 
     previewLayer.hidden = false
     
-    println("viewing map")
     net.POST(url, params: [:],
       successHandler: { responseData in
         println("post success handler")
@@ -179,17 +175,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
               self.isUnlockingBike = true
               NSLog("Error")
           })
-          
-          /*Utility.post([:], url: url) { (succeeded: Bool, msg: String) -> () in
-            var alert = UIAlertView(title: "Success!", message: msg, delegate: nil, cancelButtonTitle: "Okay.")
-            if(succeeded) {
-              alert.title = "Success!"
-              alert.message = msg
-            } else {
-              alert.title = "Failed : ("
-              alert.message = msg
-            }
-          }*/
         }
       }
     }
@@ -200,6 +185,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     let stationMarker = marker as StationMarker
     if let infoView = UIView.viewFromNibName("MarkerInfoView") as? MarkerInfoView {
       infoView.nameLabel.text = stationMarker.station.name
+      if !stationMarker.hasBikes() {
+        let button = infoView.reserveButton
+        button.setTitle("No bikes left!", forState: UIControlState.Normal)
+        button.alpha = 0.5
+      }
       return infoView
     }
     

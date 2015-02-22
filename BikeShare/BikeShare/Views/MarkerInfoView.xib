@@ -7,10 +7,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clipsSubviews="YES" contentMode="scaleToFill" id="deK-wm-fUY" customClass="MarkerInfoView" customModule="BikeShare" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="255"/>
+            <rect key="frame" x="0.0" y="0.0" width="240" height="113"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="134" translatesAutoresizingMaskIntoConstraints="NO" id="Ggu-GN-94s">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Station" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" preferredMaxLayoutWidth="134" translatesAutoresizingMaskIntoConstraints="NO" id="Ggu-GN-94s">
                     <rect key="frame" x="8" y="0.0" width="224" height="38"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="38" id="3yP-OK-bTC"/>
@@ -20,14 +20,12 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="fill" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q8o-gC-Ete">
-                    <rect key="frame" x="0.0" y="38" width="240" height="217"/>
-                    <color key="backgroundColor" red="0.47245807829999997" green="1" blue="0.2315650045" alpha="1" colorSpace="calibratedRGB"/>
-                    <state key="normal" title="Click me to reserve!">
+                    <rect key="frame" x="0.0" y="37" width="240" height="62"/>
+                    <color key="backgroundColor" red="0.046441071698627538" green="0.0037763433615099727" blue="0.051846590909090939" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Reserve Bike">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" red="1" green="0.88191854611002496" blue="0.0068398036243457749" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
-                    <connections>
-                        <action selector="reserve" destination="deK-wm-fUY" eventType="touchDown" id="F9K-Hd-HCz"/>
-                    </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -39,8 +37,9 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="nameLabel" destination="Ggu-GN-94s" id="bSx-yX-VR7"/>
+                <outlet property="reserveButton" destination="Q8o-gC-Ete" id="G6A-KF-DKX"/>
             </connections>
-            <point key="canvasLocation" x="280" y="428.5"/>
+            <point key="canvasLocation" x="282" y="346.5"/>
         </view>
     </objects>
 </document>

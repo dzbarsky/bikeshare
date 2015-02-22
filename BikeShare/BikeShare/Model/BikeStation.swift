@@ -7,6 +7,7 @@ class BikeStation {
   let name: String
   let coordinate: CLLocationCoordinate2D
   let id: String
+  let empty: Bool
   
   init(dictionary:NSDictionary)
   {
@@ -15,5 +16,6 @@ class BikeStation {
     let lat = dictionary["lat"] as CLLocationDegrees
     let lng = dictionary["lng"] as CLLocationDegrees
     coordinate = CLLocationCoordinate2DMake(lat, lng)
+    empty = dictionary["empty"] as Bool
   }
 }

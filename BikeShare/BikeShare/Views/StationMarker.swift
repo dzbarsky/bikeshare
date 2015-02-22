@@ -18,6 +18,10 @@ class StationMarker: GMSMarker {
     icon = UIImage(named: "station")
     groundAnchor = CGPoint(x: 0.5, y: 1)
     appearAnimation = kGMSMarkerAnimationPop
+    
+    if station.empty {
+      disable()
+    }
   }
   
   func highlight() {
@@ -26,6 +30,10 @@ class StationMarker: GMSMarker {
   
   func disable() {
     icon = UIImage(named: "station-grey")
+  }
+  
+  func hasBikes() -> Bool {
+    return !station.empty
   }
   
 }
