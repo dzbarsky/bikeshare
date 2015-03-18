@@ -7,17 +7,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
   @IBOutlet weak var pinImageVerticalConstraint: NSLayoutConstraint!
   @IBOutlet weak var returnBike: UIButton!
   @IBOutlet weak var elapsedTime: UILabel!
-
+  
   let locationManager = CLLocationManager()
   let net = Net()
   let userId = "545fb828e4b0d65c29c4b567"
+  var points = 15
   var isUnlockingBike = false
   var previewLayer = CALayer()
   var reservationExpiration = NSTimeInterval()
   var timer = NSTimer()
   var timerLabel = UILabel(frame: CGRectMake(0, 0, 200, 21))
+  var pointsLabel = UILabel(frame: CGRectMake(0, 0, 200, 21))
   var currentBikeId = ""
-  var closestStationId = ""
+  var closestStation : BikeStation? = nil
+  var startStation : BikeStation? = nil
+  
+  func updatePointsLabel() {
+    self.pointsLabel.text = "Points: \(self.points)"
+  }
   
   override func viewDidLoad() {
     self.returnBike.hidden = true
@@ -53,6 +60,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     
     returnBike.addTarget(self, action: "returnBikeInUse", forControlEvents: .TouchUpInside)
     
+    pointsLabel.center = CGPointMake(100, 100)
+    pointsLabel.textColor = UIColor.redColor()
+    self.view.addSubview(pointsLabel)
+    updatePointsLabel()
+    
+    
     session.startRunning()
   }
   
@@ -61,7 +74,35 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     self.returnBike.hidden = true
     //self.elapsedTime.hidden = true
     
-    let url = "http://sd-bikeshare.herokuapp.com/bikes/\(self.currentBikeId)/return?station=\(self.closestStationId)"
+    var startPoints = 0
+    let startUtil = self.startStation?.utilization
+    if startUtil < 0.25 {
+      startPoints = 0
+    } else if startUtil < 0.5 {
+      startPoints = 1
+    } else if startUtil < 0.75 {
+      startPoints = 2
+    } else {
+      startPoints = 3
+    }
+    
+    var endPoints = 0
+    let endUtil = self.closestStation?.utilization
+    if endUtil < 0.25 {
+      endPoints = 3
+    } else if endUtil < 0.5 {
+      endPoints = 2
+    } else if endUtil < 0.75 {
+      endPoints = 1
+    } else {
+      endPoints = 0
+    }
+    
+    self.points += startPoints + endPoints
+    updatePointsLabel()
+    
+    
+    let url = "http://sd-bikeshare.herokuapp.com/bikes/\(self.currentBikeId)/return?station=\(self.closestStation!.id)"
     net.POST(url, params: [:],
       successHandler: { responseData in
         println("returned bike")
@@ -115,7 +156,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
         let insets = UIEdgeInsetsMake(80, 80, 80, 80)
         let camera = self.mapView.cameraForBounds(bounds, insets: insets)
         self.mapView.animateToCameraPosition(camera)
-        self.closestStationId = marker.station.id
+        self.closestStation = marker.station
       }
     }
     task.resume()
@@ -160,6 +201,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, GMSMapView
     net.POST(url, params: [:],
       successHandler: { responseData in
         println("post success handler")
+        self.startStation = stationMarker.station
         let result = responseData.json(error: nil)! as NSDictionary
         if let expiration = result["expiration"] as? NSTimeInterval {
           self.reservationExpiration = expiration

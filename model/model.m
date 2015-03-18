@@ -4,6 +4,8 @@ function model
     % not be accomodated
     unhappy_customers = 0;
     
+    alpha = 0.2;
+    
     STATION_NUM = 329;
     
     % Current locations of bikes and capacities at each station
@@ -50,7 +52,7 @@ function model
     % Compute the number of trips that take place during a tick in this
     % hour.  Note that a tick is 10 minutes, so divide by 6.
     function trips = trips_per_tick(hour)
-        trips = floor(normrnd(counts(hour + 1, 1), counts(hour + 1, 2)^.5) / 6);
+        trips = floor(normrnd(counts(hour + 1, 1) * alpha, counts(hour + 1, 2)^.5) / 6);
     end
 
     % Compute the cost of moving some number of bikes

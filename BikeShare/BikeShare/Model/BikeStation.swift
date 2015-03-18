@@ -8,6 +8,7 @@ class BikeStation {
   let coordinate: CLLocationCoordinate2D
   let id: String
   let empty: Bool
+  let utilization: Double
   
   init(dictionary:NSDictionary)
   {
@@ -17,5 +18,7 @@ class BikeStation {
     let lng = dictionary["lng"] as CLLocationDegrees
     coordinate = CLLocationCoordinate2DMake(lat, lng)
     empty = dictionary["empty"] as Bool
+    self.utilization = 0.5
+    //utilization = (dictionary["bikes"] as Double) / (dictionary["capacity"] as Double)
   }
 }
