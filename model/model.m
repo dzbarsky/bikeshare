@@ -1,17 +1,6 @@
 function model
-   
-    % Keep track of how many people's preferred start or end station could
-    % not be accomodated
-    unhappy_customers = 0;
-    
-    alpha = 0.2;
     
     STATION_NUM = 329;
-    
-    % Current locations of bikes and capacities at each station
-    % FIXME: we should read the capacities in from the data files on the website.
-    bikes = 20 * ones(STATION_NUM);
-    capacities = 40 * ones(STATION_NUM);
     
     % Transitions holds the transition matrix for each hour, for each pair
     % of stations.
@@ -39,7 +28,8 @@ function model
     TRIPCOUNTS_FILENAME = 'july-2013-tripcounts.matrix';
     range = [0, 0, 23, 1];
     counts = dlmread(TRIPCOUNTS_FILENAME, '', range);
-
+    
+    
     %{
     figure
     axis([0, 8, 0, max(capacities)])
@@ -78,7 +68,7 @@ function model
         
         % Make sure we have a bike at the user's desired start station
         if bikes(startStation) <= 0
-            strcat('start station ', int2str(startStation),' is empty')
+            strcat('start station ', int2str(startStation),' is empty');
             unhappy_customers = unhappy_customers + 1;
             return
         end
@@ -97,7 +87,7 @@ function model
 
         % Make sure we have a bike at the user's desired end station
         if bikes(endStation) >= capacities(endStation)
-           strcat('end station ', int2str(endStation),' is full')
+           strcat('end station ', int2str(endStation),' is full');
            unhappy_customers = unhappy_customers + 1;
            return
         end
@@ -148,36 +138,69 @@ function model
 
         cost = cost_to_move(bikesMoving);
     end
+    
+    % Keep track of how many people's preferred start or end station could
+    % not be accomodated
+    unhappy_customers_by_time = zeros(1, 10);
+    for Alpha = 0:10
+        
+        
+        Alpha
+        unhappy_customers = 0;
+        % alpha represents the increase in trips due to censored demand
+        alpha = 1 + Alpha / 10;
+        
+        % Current locations of bikes and capacities at each station
+        % FIXME: we should read the capacities in from the data files on the website.
+        bikes = 20 * ones(STATION_NUM);
+        capacities = 40 * ones(STATION_NUM);
 
-    % Simulate a full day's worth of time ticks
-    totalCost = 0;
-    for i = 1:143
-        hour = floor(i / 6);
-        tripCount = trips_per_tick(hour);
-        % Simulate each trip that occurred this time tick.
-        for j = 1:tripCount
-            simulate_trip(hour);
+        % Simulate a full day's worth of time ticks
+        % totalCost = 0;
+        for i = 1:143
+            hour = floor(i / 6);
+            tripCount = trips_per_tick(hour);
+            % Simulate each trip that occurred this time tick.
+            for j = 1:tripCount
+                simulate_trip(hour);
+            end
+
+            % Simulate any rebalancing that occurred this time tick.
+            %totalCost = totalCost + simplest_rebalance();
+            %totalCost = totalCost + balanced_rebalance();
+
+            % Redraw graph
+            %{
+            hold off
+            clf
+            axis([0, 8, 0, max(capacities)])
+            axis manual
+            set(gca,'XTickLabel',labels)
+            hold on
+            bar([ bikes; unhappy_customers; totalCost ])
+            pause(0.01)
+            %}
+
         end
 
-        % Simulate any rebalancing that occurred this time tick.
-        %totalCost = totalCost + simplest_rebalance();
-        %totalCost = totalCost + balanced_rebalance();
-
-        % Redraw graph
-        %{
-        hold off
-        clf
-        axis([0, 8, 0, max(capacities)])
-        axis manual
-        set(gca,'XTickLabel',labels)
-        hold on
-        bar([ bikes; unhappy_customers; totalCost ])
-        pause(0.01)
-        %}
-        
+        % bikes;
+        % unhappy_customers;
+        % totalCost;
+        unhappy_customers_by_time(Alpha + 1) = unhappy_customers;
+        unhappy_customers_by_time
+         
     end
-
-    bikes;
-    unhappy_customers
-    totalCost
+    
+   
+        
+    % Graph various values of alpha vs. number of unhappy customers
+    hold off;
+    clf;
+    
+    %unhappy_customers_by_time = [1000, 2000, 3000, 4000, 5000, 6000];
+    bar(unhappy_customers_by_time);
+    title('Unhappy Customers as Predicted By Censored Demand');
+    xlabel('\alpha');
+    ylabel('Unhappy Customers');
+    pause(0.01)
 end
