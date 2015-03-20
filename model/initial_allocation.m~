@@ -11,19 +11,17 @@ function initial_allocation
         end
 
         
-    NUM_ITERS = 100;
+    best_errors = []
+    best_es = []
     
-    best_errors = zeros(NUM_ITERS, 1);
-    best_es = zeros(NUM_ITERS, 24, STATION_NUM);
+    parpool
     
-    %parpool
-    
-    parfor iter = 1:NUM_ITERS
+    parfor iter = 1:1000
         e = zeros(24, STATION_NUM);
         e_optimal = rand(24, STATION_NUM);
 
         for t = 1:24
-            e_optimal(t, :, :) = e_optimal(t, :, :) / sum(e_optimal(t, :, :)) * BIKE_NUM;
+            e_optimal(t) = e_optimal(t) / sum(e_optimal(t)) * BIKE_NUM;
         end
 
         total_error = 0;
@@ -44,15 +42,18 @@ function initial_allocation
             end
         end
         
-        best_errors(iter) = total_error
-        best_es(iter, :, :) = e_optimal;
+        best_errors  = [best_errors, total_error];
+        best_es = [best_es, e_optimal];
         iter
     end
     
-    best_errors
     ix = find(best_errors == max(best_errors));
-    best_es;
-    best_e = best_es(ix, :, :);
+    best_e = best_es
+    if total_error < best_error
+        best_e = e_optimal
+        best_error = total_error
+        disp 'FOUND NEW OPTIMUM'
+    end
 end
 
 
