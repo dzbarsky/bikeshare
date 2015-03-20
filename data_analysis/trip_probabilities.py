@@ -8,7 +8,7 @@ import numpy
 
 class CSVParser:
 
-    def __init__(self, filename):
+    def __init__(self, filename, capacities):
         self.hours = []
         self.stations = set()
 
@@ -31,6 +31,18 @@ class CSVParser:
         for station in self.stations:
             stationIndices[station] = index
             index += 1
+
+        # Write capacity matrix
+        c = open(filename + '_capacities.matrix', 'w')
+        numStations = len(stationIndices)
+        stnCaps = capacities.values()
+        avg = sum(stnCaps) / len(stnCaps)
+        caps = [avg for i in stnCaps]
+        for stn in capacities:
+            if stn in stationIndices:
+                caps[stationIndices[stn]] = capacities[stn]
+        for i in range(len(caps)):
+            c.write(str(i) + ' ' + str(caps[i]) + '\n')
 
         # Output transition matrix
         f = open(filename + '.matrix', 'w')
@@ -107,13 +119,30 @@ class CSVParser:
             ret += str(row) + '\n'
         return ret
 
+class FeedParser:
+
+    def __init__(self, filename):
+        f = open(filename)
+        self.json = json.loads(f.read())
+
+        self.numBikes = 0
+
+    def capacities(self):
+        capacities = dict()
+        for station in self.json['stationBeanList']:
+            capacities[station['stationName']] = station['totalDocks']
+            self.numBikes = self.numBikes + station['availableBikes']
+        print self.numBikes
+        return capacities
 
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', nargs='?')
 args = parser.parse_args()
 if args.filename:
     #json_file = args.filename + '.json'
-    csvparser = CSVParser(args.filename)
+    feedparser = FeedParser('station_feed.json')
+    capacities = feedparser.capacities()
+    csvparser = CSVParser(args.filename, capacities)
 
 else:
     parser.print_help()
