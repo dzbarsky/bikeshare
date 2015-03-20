@@ -2,6 +2,12 @@
     
     STATION_NUM = 329;
     
+    
+    CAPACITIES_FILENAME = 'july-2013-capacities.matrix';
+    indexedCapacities = dlmread(CAPACITIES_FILENAME, '');
+    capacities = indexedCapacities(:,2);
+    % capacities = 40 * ones(STATION_NUM);
+    
     % Transitions holds the transition matrix for each hour, for each pair
     % of stations.
     % For example, transitions(0, 10, 50) is the probability of going to
@@ -153,7 +159,7 @@
         % Current locations of bikes and capacities at each station
         % FIXME: we should read the capacities in from the data files on the website.
         bikes = 20 * ones(STATION_NUM);
-        capacities = 40 * ones(STATION_NUM);
+        
 
         % Simulate a full day's worth of time ticks
         % totalCost = 0;
