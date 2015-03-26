@@ -35,6 +35,11 @@
     range = [0, 0, 23, 1];
     counts = dlmread(TRIPCOUNTS_FILENAME, '', range);
     
+    % Start states to rebalance to at each station at each hour
+    % Expects matrix where each row is an hour and each column is a station
+    STARTSTATES_FILENAME = 'startstates.matrix';
+    start_states = dlmread(STARTSTATES_FILENAME, '');
+    start_states = round(start_states);
     
     %{
     figure
@@ -56,6 +61,8 @@
         % Picked a random function here.  Need to think about this.
         cost = (5 * bikes + 7) / 100;
     end
+
+    rebalanced = 0
 
     % Simulate a single trip that take place in a given hour
     function [] = simulate_trip(hour)
@@ -167,9 +174,19 @@
             hour = floor(i / 6);
             tripCount = trips_per_tick(hour);
             % Simulate each trip that occurred this time tick.
+             
+            for station = 1:STATION_NUM
+                givenState = start_states(hour, station);
+                currentState = bikes(station);
+                rebalanced = rebalanced + abs(givenState - currentState);
+                bikes(station) = givenState;
+            end
+            
             for j = 1:tripCount
                 simulate_trip(hour);
             end
+            
+            rebalanced
 
             % Simulate any rebalancing that occurred this time tick.
             %totalCost = totalCost + simplest_rebalance();
