@@ -37,7 +37,7 @@
     
     % Start states to rebalance to at each station at each hour
     % Expects matrix where each row is an hour and each column is a station
-    STARTSTATES_FILENAME = 'startstates.matrix';
+    STARTSTATES_FILENAME = 'optimal-allocations.matrix';
     start_states = dlmread(STARTSTATES_FILENAME, '');
     start_states = round(start_states);
     
@@ -174,19 +174,19 @@
             hour = floor(i / 6);
             tripCount = trips_per_tick(hour);
             % Simulate each trip that occurred this time tick.
-             
-            for station = 1:STATION_NUM
-                givenState = start_states(hour, station);
-                currentState = bikes(station);
-                rebalanced = rebalanced + abs(givenState - currentState);
-                bikes(station) = givenState;
+            
+            if (mod(i,6) == 0)
+                for station = 1:STATION_NUM
+                    givenState = start_states(hour + 1, station);
+                    currentState = bikes(station);
+                    rebalanced = rebalanced + abs(givenState - currentState);
+                    bikes(station) = givenState;
+                end
             end
             
             for j = 1:tripCount
                 simulate_trip(hour);
             end
-            
-            rebalanced
 
             % Simulate any rebalancing that occurred this time tick.
             %totalCost = totalCost + simplest_rebalance();
@@ -206,6 +206,7 @@
 
         end
 
+        rebalanced
         % bikes;
         % unhappy_customers;
         % totalCost;
