@@ -2,14 +2,13 @@ function initial_allocation
 
     STATION_NUM = 329;
     BIKE_NUM = 3116;
-    
+            
     P = ones(24, STATION_NUM, STATION_NUM);
-        TRANSITIONS_FILENAME = 'july-2013.matrix';
-        for hour = 0:23
-            range = [hour * STATION_NUM, 0, (hour + 1) * STATION_NUM - 1, STATION_NUM - 1];
-            P(hour + 1, :, :) = dlmread(TRANSITIONS_FILENAME, '', range);
-        end
-
+    TRANSITIONS_FILENAME = 'july-2013.matrix';
+    for hour = 0:23
+        range = [hour * STATION_NUM, 0, (hour + 1) * STATION_NUM - 1, STATION_NUM - 1];
+        P(hour + 1, :, :) = dlmread(TRANSITIONS_FILENAME, '', range);
+    end
     
     best_error = 999999999;
     
@@ -56,8 +55,9 @@ function initial_allocation
         best_found = max(best_errors);
         if best_found < best_error
             ix = find(best_errors == best_found);
-            best_e = best_es(ix, :, :);
-            dlmwrite('optimal-allocations.matrix', best_e);
+            best_e = squeeze(best_es(ix, :, :));
+            size(best_e)
+            dlmwrite('optimal-allocations.matrix', best_e, 'delimiter','\t');
             best_error = best_found
             disp 'Found local opt'
         end
