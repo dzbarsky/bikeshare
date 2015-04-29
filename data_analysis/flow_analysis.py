@@ -5,19 +5,22 @@ import time
 import os
 import json
 
+# CSVParser is responsible for parsing the CSV into an intermediate form,
+# to make future analyses faster.
 class CSVParser:
 
     def __init__(self, filename):
-        print 'reading file'
+        # We keep track of the historical trips and rebalances to create
+        # summary statistics.
         self.historical_counts = dict()
         self.historical_rebalances = dict()
         self.station_counts = dict()
         self.bike_locations = dict()
         self.rebalances = dict()
 
+        # Read and process all the lines in the file
         lines = pandas.read_csv(args.filename)
         self.current_date = time.strptime(lines.loc[0]['starttime'], '%Y-%m-%d %H:%M:%S')
-        print len(lines.index)
         for i in range(len(lines.index)):
             self.process_line(lines.loc[i])
 
@@ -27,15 +30,12 @@ class CSVParser:
         o['historical_rebalances'] = self.historical_rebalances
         f.write(json.dumps(o))
 
-        print 'read file'
-
-
+    # Process a single line of the CSV.
     def process_line(self, line):
         start_date = time.strptime(line['starttime'], '%Y-%m-%d %H:%M:%S')
 
         if time.mktime(start_date) - time.mktime(self.current_date) >= 24 * 60 * 60:
-            # At least a day has elapsed
-            print 'day elapsed'
+            # At least a day has elapsed, so reset our counts
             self.current_date = start_date
             for (k, v) in self.station_counts.iteritems():
                 if k not in self.historical_counts:
@@ -53,6 +53,8 @@ class CSVParser:
         start_station = line['start station name']
         end_station = line['end station name']
         bikeid = line['bikeid']
+        # Keep track of where the bike came from so we know whether it has been
+        # rebalanced
         if bikeid in self.bike_locations:
             prev_station = self.bike_locations[bikeid]
         else:
@@ -60,6 +62,7 @@ class CSVParser:
 
         self.bike_locations[bikeid] = end_station
 
+        # If a rebalance occurred, record it.
         if prev_station and start_station is not prev_station:
             key = prev_station + "?" + start_station
             if key not in self.rebalances:
@@ -71,9 +74,13 @@ class CSVParser:
             self.station_counts[start_station] = 0
         if end_station not in self.station_counts:
             self.station_counts[end_station] = 0
+
+        # Change each station's respective flow for this day.
         self.station_counts[start_station] -= 1
         self.station_counts[end_station] += 1
 
+# Data parser performs the actual analysis from the intermediate data
+# representation. It prints the station followed by the average daily net flow.
 class DataParser:
 
     def __init__(self, filename):
@@ -86,6 +93,10 @@ class DataParser:
     def analyze(self):
         for (k, v) in self.historical_counts.iteritems():
             print k + "\t" + str(sum(v)/float(len(v)))
+
+# Parsing the trips takes a while so only parse if the -f flag is passed
+# or there were no previous intermediate results.  Otherwise, reuse
+# the previous results.
 
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', nargs='?')

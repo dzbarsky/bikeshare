@@ -6,6 +6,17 @@ import os
 import json
 import numpy
 
+# CSVParser parses a CSV file representing Citi Bike's trip history
+# and writes the following output files:
+#   * [FILENAME]_capacities.matrix - the capacities of each station
+#   * [FILENAME].matrix - the transition probabilities for each pair of
+#       stations for each hour
+#   * [FILENAME]_start.matrix - the likelihood of starting a tip at each
+#       station, also broken down by hour
+#   * [FILENAME]_tripcounts.matrix - the mean and standard deviation of
+#       number of trips per hour.  We confirmed it was a normal distribution
+#       by looking at histograms and q-q plots of trip counts.
+
 class CSVParser:
 
     def __init__(self, filename, capacities):
@@ -76,6 +87,7 @@ class CSVParser:
         m = [[numpy.mean(x.values()), numpy.var(x.values())] for x in self.tripTotals]
         h.write(self.string_matrix(m))
 
+    # Process a single entry of the CSV file
     def process_line(self, line):
         current_hour = time.strptime(line['starttime'], '%Y-%m-%d %H:%M:%S').tm_hour
         current_day = time.strptime(line['starttime'], '%Y-%m-%d %H:%M:%S').tm_yday
@@ -107,18 +119,22 @@ class CSVParser:
 
         self.tripTotals[current_hour][current_day] += 1
 
+    # Pretty-print a matrix
     def string_matrix(self, matrix):
         ret = ''
         for row in matrix:
             ret += ' '.join(map(str, row)) + '\n'
         return ret
 
+    # Pretty-print a vector
     def string_vector(self, vec):
         ret = ''
         for row in vec:
             ret += str(row) + '\n'
         return ret
 
+# FeedParser parses the JSON station feed and returns a
+# dictionary mapping each station to its capacity.
 class FeedParser:
 
     def __init__(self, filename):
